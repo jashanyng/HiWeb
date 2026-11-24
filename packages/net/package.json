@@ -1,0 +1,49 @@
+{
+  "name": "@pcfprio/hiweb-net",
+  "version": "0.1.0",
+  "description": "Isomorphic fetch HTTP clients, pluggable envelope decoders, upstream guard integration, and SSE stream parser for HiWeb.",
+  "type": "module",
+  "license": "MIT",
+  "sideEffects": false,
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pcfprio/HiWeb.git",
+    "directory": "packages/net"
+  },
+  "files": [
+    "dist"
+  ],
+  "dependencies": {
+    "@pcfprio/hiweb-base": "workspace:*",
+    "@pcfprio/hiweb-core": "workspace:*"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./errors": {
+      "types": "./dist/errors.d.ts",
+      "import": "./dist/errors.js"
+    },
+    "./envelope": {
+      "types": "./dist/envelope.d.ts",
+      "import": "./dist/envelope.js"
+    },
+    "./browser-client": {
+      "types": "./dist/browser-client.d.ts",
+      "import": "./dist/browser-client.js"
+    },
+    "./upstream-client": {
+      "types": "./dist/upstream-client.d.ts",
+      "import": "./dist/upstream-client.js"
+    },
+    "./sse": {
+      "types": "./dist/sse.d.ts",
+      "import": "./dist/sse.js"
+    }
+  }
+}

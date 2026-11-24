@@ -1,0 +1,45 @@
+{
+  "name": "@pcfprio/hiweb-base",
+  "version": "0.1.0",
+  "description": "Zero-dependency foundational contracts, redacted structured logger, analytics/error-reporting ports, and locale/timezone formatters for HiWeb.",
+  "type": "module",
+  "license": "MIT",
+  "sideEffects": false,
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pcfprio/HiWeb.git",
+    "directory": "packages/base"
+  },
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./errors": {
+      "types": "./dist/errors.d.ts",
+      "import": "./dist/errors.js"
+    },
+    "./logger": {
+      "types": "./dist/logger.d.ts",
+      "import": "./dist/logger.js"
+    },
+    "./analytics": {
+      "types": "./dist/analytics.d.ts",
+      "import": "./dist/analytics.js"
+    },
+    "./error-reporter": {
+      "types": "./dist/error-reporter.d.ts",
+      "import": "./dist/error-reporter.js"
+    },
+    "./format": {
+      "types": "./dist/format.d.ts",
+      "import": "./dist/format.js"
+    }
+  }
+}

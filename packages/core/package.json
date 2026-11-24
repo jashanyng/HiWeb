@@ -1,0 +1,44 @@
+{
+  "name": "@pcfprio/hiweb-core",
+  "version": "0.1.0",
+  "description": "Isomorphic Web security primitives: Web Crypto AES-256-GCM session cipher, safe URL/redirect validation, origin/CSRF guards, rate limiting, and deployment guards.",
+  "type": "module",
+  "license": "MIT",
+  "sideEffects": false,
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pcfprio/HiWeb.git",
+    "directory": "packages/core"
+  },
+  "files": [
+    "dist"
+  ],
+  "dependencies": {
+    "@pcfprio/hiweb-base": "workspace:*"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./session-crypto": {
+      "types": "./dist/session-crypto.d.ts",
+      "import": "./dist/session-crypto.js"
+    },
+    "./url": {
+      "types": "./dist/url.d.ts",
+      "import": "./dist/url.js"
+    },
+    "./security": {
+      "types": "./dist/security.d.ts",
+      "import": "./dist/security.js"
+    },
+    "./deployment": {
+      "types": "./dist/deployment.d.ts",
+      "import": "./dist/deployment.js"
+    }
+  }
+}
