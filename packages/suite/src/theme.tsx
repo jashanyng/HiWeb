@@ -1,6 +1,6 @@
 "use client";
 
-import { createBrowserStore, type BrowserStore } from "@pcfprio/hiweb-store/browser-store";
+import { createBrowserStore, type BrowserStore } from "@jashanyng/hiweb-store/browser-store";
 import { MonitorIcon, MoonIcon, SunIcon } from "lucide-react";
 import {
   createContext,

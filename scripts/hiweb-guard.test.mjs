@@ -47,11 +47,11 @@ function createFakeHiwebFixture(baseDir) {
   const guardContent = existsSync(guardSourcePath) ? readFileSync(guardSourcePath, "utf8") : "// placeholder";
 
   const pkgContents = {
-    "pcfprio-hiweb-base-0.1.0.tgz": "fake-tgz-base",
-    "pcfprio-hiweb-store-0.1.0.tgz": "fake-tgz-store",
-    "pcfprio-hiweb-suite-0.1.0.tgz": "fake-tgz-suite",
-    "pcfprio-hiweb-tooling-0.1.0.tgz": "fake-tgz-tooling",
-    "pcfprio-hiweb-contract-0.1.0.tgz": "fake-tgz-contract",
+    "jashanyng-hiweb-base-0.1.0.tgz": "fake-tgz-base",
+    "jashanyng-hiweb-store-0.1.0.tgz": "fake-tgz-store",
+    "jashanyng-hiweb-suite-0.1.0.tgz": "fake-tgz-suite",
+    "jashanyng-hiweb-tooling-0.1.0.tgz": "fake-tgz-tooling",
+    "jashanyng-hiweb-contract-0.1.0.tgz": "fake-tgz-contract",
   };
 
   const manifest = {
@@ -60,30 +60,30 @@ function createFakeHiwebFixture(baseDir) {
       sha256: sha256(guardContent),
     },
     packages: {
-      "@pcfprio/hiweb-base": {
+      "@jashanyng/hiweb-base": {
         version: "0.1.0",
-        tarball: "pcfprio-hiweb-base-0.1.0.tgz",
-        sha256: sha256(pkgContents["pcfprio-hiweb-base-0.1.0.tgz"]),
+        tarball: "jashanyng-hiweb-base-0.1.0.tgz",
+        sha256: sha256(pkgContents["jashanyng-hiweb-base-0.1.0.tgz"]),
       },
-      "@pcfprio/hiweb-store": {
+      "@jashanyng/hiweb-store": {
         version: "0.1.0",
-        tarball: "pcfprio-hiweb-store-0.1.0.tgz",
-        sha256: sha256(pkgContents["pcfprio-hiweb-store-0.1.0.tgz"]),
+        tarball: "jashanyng-hiweb-store-0.1.0.tgz",
+        sha256: sha256(pkgContents["jashanyng-hiweb-store-0.1.0.tgz"]),
       },
-      "@pcfprio/hiweb-suite": {
+      "@jashanyng/hiweb-suite": {
         version: "0.1.0",
-        tarball: "pcfprio-hiweb-suite-0.1.0.tgz",
-        sha256: sha256(pkgContents["pcfprio-hiweb-suite-0.1.0.tgz"]),
+        tarball: "jashanyng-hiweb-suite-0.1.0.tgz",
+        sha256: sha256(pkgContents["jashanyng-hiweb-suite-0.1.0.tgz"]),
       },
-      "@pcfprio/hiweb-tooling": {
+      "@jashanyng/hiweb-tooling": {
         version: "0.1.0",
-        tarball: "pcfprio-hiweb-tooling-0.1.0.tgz",
-        sha256: sha256(pkgContents["pcfprio-hiweb-tooling-0.1.0.tgz"]),
+        tarball: "jashanyng-hiweb-tooling-0.1.0.tgz",
+        sha256: sha256(pkgContents["jashanyng-hiweb-tooling-0.1.0.tgz"]),
       },
-      "@pcfprio/hiweb-contract": {
+      "@jashanyng/hiweb-contract": {
         version: "0.1.0",
-        tarball: "pcfprio-hiweb-contract-0.1.0.tgz",
-        sha256: sha256(pkgContents["pcfprio-hiweb-contract-0.1.0.tgz"]),
+        tarball: "jashanyng-hiweb-contract-0.1.0.tgz",
+        sha256: sha256(pkgContents["jashanyng-hiweb-contract-0.1.0.tgz"]),
       },
     },
   };
@@ -91,19 +91,19 @@ function createFakeHiwebFixture(baseDir) {
   const files = {
     "scripts/hiweb-guard.mjs": guardContent,
     "artifacts/manifest.json": `${JSON.stringify(manifest, null, 2)}\n`,
-    "packages/base/package.json": JSON.stringify({ name: "@pcfprio/hiweb-base", version: "0.1.0" }),
+    "packages/base/package.json": JSON.stringify({ name: "@jashanyng/hiweb-base", version: "0.1.0" }),
     "packages/store/package.json": JSON.stringify({
-      name: "@pcfprio/hiweb-store",
+      name: "@jashanyng/hiweb-store",
       version: "0.1.0",
-      dependencies: { "@pcfprio/hiweb-base": "workspace:*" },
+      dependencies: { "@jashanyng/hiweb-base": "workspace:*" },
     }),
     "packages/suite/package.json": JSON.stringify({
-      name: "@pcfprio/hiweb-suite",
+      name: "@jashanyng/hiweb-suite",
       version: "0.1.0",
-      dependencies: { "@pcfprio/hiweb-base": "workspace:*", "@pcfprio/hiweb-store": "workspace:*" },
+      dependencies: { "@jashanyng/hiweb-base": "workspace:*", "@jashanyng/hiweb-store": "workspace:*" },
     }),
-    "packages/tooling/package.json": JSON.stringify({ name: "@pcfprio/hiweb-tooling", version: "0.1.0" }),
-    "packages/contract/package.json": JSON.stringify({ name: "@pcfprio/hiweb-contract", version: "0.1.0" }),
+    "packages/tooling/package.json": JSON.stringify({ name: "@jashanyng/hiweb-tooling", version: "0.1.0" }),
+    "packages/contract/package.json": JSON.stringify({ name: "@jashanyng/hiweb-contract", version: "0.1.0" }),
   };
 
   for (const [tarball, content] of Object.entries(pkgContents)) {
@@ -181,14 +181,14 @@ describe("hiweb-guard", () => {
           name: "app-consumer",
           private: true,
           dependencies: {
-            "@pcfprio/hiweb-suite": "file:./vendor/hiweb/old.tgz",
+            "@jashanyng/hiweb-suite": "file:./vendor/hiweb/old.tgz",
             react: "19.3.1",
           },
           devDependencies: {
-            "@pcfprio/hiweb-tooling": "file:./vendor/hiweb/old-tooling.tgz",
+            "@jashanyng/hiweb-tooling": "file:./vendor/hiweb/old-tooling.tgz",
           },
           overrides: {
-            "@pcfprio/hiweb-base": "file:./vendor/hiweb/old.tgz",
+            "@jashanyng/hiweb-base": "file:./vendor/hiweb/old.tgz",
           },
         },
         null,
@@ -199,7 +199,7 @@ describe("hiweb-guard", () => {
 
     writeFileSync(
       path.join(consumerDir, "pnpm-workspace.yaml"),
-      `saveExact: true\nminimumReleaseAge: 1440\nallowBuilds:\n  "@swc/core": false\noverrides:\n  react: "19.3.1"\n  "@pcfprio/hiweb-contract": "file:./vendor/hiweb/stale.tgz"\n`,
+      `saveExact: true\nminimumReleaseAge: 1440\nallowBuilds:\n  "@swc/core": false\noverrides:\n  react: "19.3.1"\n  "@jashanyng/hiweb-contract": "file:./vendor/hiweb/stale.tgz"\n`,
       "utf8",
     );
 
@@ -214,10 +214,10 @@ describe("hiweb-guard", () => {
 
     // 传递闭包包含 suite, store, base, tooling，不包含未引用的 contract
     expect(Object.keys(lock.packages).sort()).toEqual([
-      "@pcfprio/hiweb-base",
-      "@pcfprio/hiweb-store",
-      "@pcfprio/hiweb-suite",
-      "@pcfprio/hiweb-tooling",
+      "@jashanyng/hiweb-base",
+      "@jashanyng/hiweb-store",
+      "@jashanyng/hiweb-suite",
+      "@jashanyng/hiweb-tooling",
     ]);
     for (const entry of Object.values(lock.packages)) {
       expect("path" in entry).toBe(false);
@@ -233,9 +233,11 @@ describe("hiweb-guard", () => {
     // package.json 中旧 overrides 已移除，直接依赖已更新
     const updatedPkg = JSON.parse(readFileSync(path.join(consumerDir, "package.json"), "utf8"));
     expect(updatedPkg.overrides).toBeUndefined();
-    expect(updatedPkg.dependencies["@pcfprio/hiweb-suite"]).toBe("file:./vendor/hiweb/pcfprio-hiweb-suite-0.1.0.tgz");
-    expect(updatedPkg.devDependencies["@pcfprio/hiweb-tooling"]).toBe(
-      "file:./vendor/hiweb/pcfprio-hiweb-tooling-0.1.0.tgz",
+    expect(updatedPkg.dependencies["@jashanyng/hiweb-suite"]).toBe(
+      "file:./vendor/hiweb/jashanyng-hiweb-suite-0.1.0.tgz",
+    );
+    expect(updatedPkg.devDependencies["@jashanyng/hiweb-tooling"]).toBe(
+      "file:./vendor/hiweb/jashanyng-hiweb-tooling-0.1.0.tgz",
     );
 
     // pnpm-workspace.yaml 保留原有配置与非 hiweb overrides
@@ -244,14 +246,14 @@ describe("hiweb-guard", () => {
     expect(workspaceYaml).toContain("minimumReleaseAge: 1440");
     expect(workspaceYaml).toContain('"@swc/core": false');
     expect(workspaceYaml).toContain('react: "19.3.1"');
-    expect(workspaceYaml).not.toContain("@pcfprio/hiweb-contract");
+    expect(workspaceYaml).not.toContain("@jashanyng/hiweb-contract");
 
     // 写入合法 pnpm-lock.yaml 后 verify 通过
     writeFakePnpmLock(consumerDir, {
-      "@pcfprio/hiweb-base": "pcfprio-hiweb-base-0.1.0.tgz",
-      "@pcfprio/hiweb-store": "pcfprio-hiweb-store-0.1.0.tgz",
-      "@pcfprio/hiweb-suite": "pcfprio-hiweb-suite-0.1.0.tgz",
-      "@pcfprio/hiweb-tooling": "pcfprio-hiweb-tooling-0.1.0.tgz",
+      "@jashanyng/hiweb-base": "jashanyng-hiweb-base-0.1.0.tgz",
+      "@jashanyng/hiweb-store": "jashanyng-hiweb-store-0.1.0.tgz",
+      "@jashanyng/hiweb-suite": "jashanyng-hiweb-suite-0.1.0.tgz",
+      "@jashanyng/hiweb-tooling": "jashanyng-hiweb-tooling-0.1.0.tgz",
     });
 
     const verified = verifyHiweb({ rootDir: consumerDir, hiwebDir });
@@ -268,13 +270,13 @@ describe("hiweb-guard", () => {
       JSON.stringify({
         name: "app-consumer",
         private: true,
-        dependencies: { "@pcfprio/hiweb-base": "file:./vendor/hiweb/old.tgz" },
+        dependencies: { "@jashanyng/hiweb-base": "file:./vendor/hiweb/old.tgz" },
       }),
       "utf8",
     );
     writeFileSync(path.join(consumerDir, "pnpm-workspace.yaml"), "saveExact: true\n", "utf8");
     syncHiweb({ rootDir: consumerDir, hiwebDir });
-    writeFakePnpmLock(consumerDir, { "@pcfprio/hiweb-base": "pcfprio-hiweb-base-0.1.0.tgz" });
+    writeFakePnpmLock(consumerDir, { "@jashanyng/hiweb-base": "jashanyng-hiweb-base-0.1.0.tgz" });
 
     // 1. guard 副本被篡改 -> 阻断
     const consumerGuard = path.join(consumerDir, "scripts/hiweb-guard.mjs");
@@ -289,7 +291,7 @@ describe("hiweb-guard", () => {
     rmSync(path.join(consumerDir, "package-lock.json"));
 
     // 3. tgz 篡改 -> 阻断
-    const tgzPath = path.join(consumerDir, "vendor/hiweb/pcfprio-hiweb-base-0.1.0.tgz");
+    const tgzPath = path.join(consumerDir, "vendor/hiweb/jashanyng-hiweb-base-0.1.0.tgz");
     const origTgz = readFileSync(tgzPath);
     writeFileSync(tgzPath, "tampered", "utf8");
     expect(() => verifyHiweb({ rootDir: consumerDir, hiwebDir })).toThrow(/SHA-256/);
@@ -311,7 +313,7 @@ describe("hiweb-guard", () => {
       "package.json": JSON.stringify({
         name: "main-consumer",
         private: true,
-        dependencies: { "@pcfprio/hiweb-base": "file:./vendor/hiweb/old.tgz" },
+        dependencies: { "@jashanyng/hiweb-base": "file:./vendor/hiweb/old.tgz" },
       }),
       "pnpm-workspace.yaml": "saveExact: true\n",
     });
@@ -327,7 +329,7 @@ describe("hiweb-guard", () => {
 
     const lock = syncHiweb({ rootDir: wtDir });
     expect(lock.commitSha).toBe(commitSha);
-    writeFakePnpmLock(wtDir, { "@pcfprio/hiweb-base": "pcfprio-hiweb-base-0.1.0.tgz" });
+    writeFakePnpmLock(wtDir, { "@jashanyng/hiweb-base": "jashanyng-hiweb-base-0.1.0.tgz" });
     expect(verifyHiweb({ rootDir: wtDir }).commitSha).toBe(commitSha);
   });
 });

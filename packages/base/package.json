@@ -1,5 +1,5 @@
 {
-  "name": "@pcfprio/hiweb-base",
+  "name": "@jashanyng/hiweb-base",
   "version": "0.1.0",
   "description": "Zero-dependency foundational contracts, redacted structured logger, analytics/error-reporting ports, and locale/timezone formatters for HiWeb.",
   "type": "module",
@@ -10,7 +10,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/pcfprio/HiWeb.git",
+    "url": "https://github.com/jashanyng/HiWeb.git",
     "directory": "packages/base"
   },
   "files": [

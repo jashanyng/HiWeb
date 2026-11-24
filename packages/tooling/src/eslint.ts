@@ -65,10 +65,10 @@ const LAYER_PATTERNS = {
   relServer: ban("^(\\.{1,2}/)+(.*/)?server(\\.[cm]?[jt]sx?|/|$)", "客户端可执行代码不得导入 server 目录或模块。"),
   relDeep: ban("^(\\.\\./){3,}", "跨顶层或深层目录引用请使用 @/ 别名。"),
   hiwebNonUi: ban(
-    "^@pcfprio/hiweb-(?!suite(/|$)|next(/|$)).+",
-    "页面、功能与实体层不得直接导入非 UI @pcfprio/hiweb-* 子包，请经 src/shared/ 或 src/server/ 适配层封装。",
+    "^@jashanyng/hiweb-(?!suite(/|$)|next(/|$)).+",
+    "页面、功能与实体层不得直接导入非 UI @jashanyng/hiweb-* 子包，请经 src/shared/ 或 src/server/ 适配层封装。",
   ),
-  hiwebNext: ban("^@pcfprio/hiweb-next(/|$)", "页面、功能、实体与共享层不得直接导入 @pcfprio/hiweb-next。"),
+  hiwebNext: ban("^@jashanyng/hiweb-next(/|$)", "页面、功能、实体与共享层不得直接导入 @jashanyng/hiweb-next。"),
 } as const;
 
 const CODE_EXT = "{ts,tsx,js,jsx,mjs,cjs}";

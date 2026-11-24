@@ -14,10 +14,10 @@ import {
 import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
-export const HIWEB_REPOSITORY = "https://github.com/pcfprio/HiWeb.git";
+export const HIWEB_REPOSITORY = "https://github.com/jashanyng/HiWeb.git";
 export const HIWEB_LOCK_SCHEMA_VERSION = 1;
 
-const HIWEB_PKG_PREFIX = "@pcfprio/hiweb-";
+const HIWEB_PKG_PREFIX = "@jashanyng/hiweb-";
 const SHA1_HEX_RE = /^[0-9a-f]{40}$/;
 const SHA256_HEX_RE = /^[0-9a-f]{64}$/;
 
@@ -277,7 +277,7 @@ export function upsertPnpmWorkspaceOverrides(yamlContent, hiwebOverrides) {
 }
 
 /**
- * 解析单个或多个 YAML 文档中 packages 段内的所有 @pcfprio/hiweb-* 锁定记录。
+ * 解析单个或多个 YAML 文档中 packages 段内的所有 @jashanyng/hiweb-* 锁定记录。
  * pnpm 12 在设置 packageManager 时会生成双文档 pnpm-lock.yaml（首文档放 packageManagerDependencies）。
  * @param {string} lockYaml
  */
@@ -407,7 +407,7 @@ function computeRequiredHiwebClosure(pkgJson, hiwebDir) {
   }
 
   if (seeds.size === 0) {
-    throw new Error("消费仓 package.json 中未声明任何 @pcfprio/hiweb-* 依赖，至少需声明一个实际消费的 HiWeb 子包");
+    throw new Error("消费仓 package.json 中未声明任何 @jashanyng/hiweb-* 依赖，至少需声明一个实际消费的 HiWeb 子包");
   }
 
   /** @type {Set<string>} */
@@ -475,7 +475,7 @@ function verifyConsumerPackageJson(pkgJson, lockedPackages) {
     }
   }
   if (declaredHiwebCount === 0) {
-    throw new Error("package.json 中未声明任何 @pcfprio/hiweb-* 依赖");
+    throw new Error("package.json 中未声明任何 @jashanyng/hiweb-* 依赖");
   }
   if (pkgJson.overrides && typeof pkgJson.overrides === "object") {
     for (const name of Object.keys(pkgJson.overrides)) {
@@ -736,7 +736,7 @@ export function syncHiweb(options = {}) {
   writeFileSync(path.join(rootDir, "hiweb.lock.json"), `${JSON.stringify(lockData, null, 2)}\n`, "utf8");
 
   // 清除旧已安装子包缓存，确保后续 pnpm install 从本地 tarball 重新解包
-  const installedScopeDir = path.join(rootDir, "node_modules", "@pcfprio");
+  const installedScopeDir = path.join(rootDir, "node_modules", "@jashanyng");
   if (existsSync(installedScopeDir)) {
     rmSync(installedScopeDir, { recursive: true, force: true });
   }

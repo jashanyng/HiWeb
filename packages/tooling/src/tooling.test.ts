@@ -51,7 +51,7 @@ describe("tooling presets", () => {
          import { UserBadge } from "@/entities/user";
          import { cn } from "@/shared/lib/cn";
          import { env } from "@/server/env";
-         import { Button } from "@pcfprio/hiweb-suite/button";
+         import { Button } from "@jashanyng/hiweb-suite/button";
          void [OrderList, getOrders, UserBadge, cn, env, Button];`,
         "src/app/(dashboard)/orders/page.tsx",
       ),
@@ -62,8 +62,8 @@ describe("tooling presets", () => {
        import { query } from "@/features/orders/server/queries";
        import { schema } from "@/entities/user/schema";
        import { x } from "../../../features/orders";
-       import { createBrowserApiClient } from "@pcfprio/hiweb-net/browser-client";
-       import { bff } from "@pcfprio/hiweb-next/bff";
+       import { createBrowserApiClient } from "@jashanyng/hiweb-net/browser-client";
+       import { bff } from "@jashanyng/hiweb-next/bff";
        void [OrderTable, query, schema, x, createBrowserApiClient, bff];`,
       "src/app/(dashboard)/orders/page.tsx",
     );
@@ -77,23 +77,23 @@ describe("tooling presets", () => {
     ]);
 
     const layoutViolations = lintImports(
-      `import { sanitizeNextPath } from "@pcfprio/hiweb-core/url";
+      `import { sanitizeNextPath } from "@jashanyng/hiweb-core/url";
        void sanitizeNextPath;`,
       "src/app/layout.tsx",
     );
     expect(layoutViolations).toHaveLength(1);
 
     const appHelperViolations = lintImports(
-      `import { createLogger } from "@pcfprio/hiweb-base/logger";
+      `import { createLogger } from "@jashanyng/hiweb-base/logger";
        void createLogger;`,
       "src/app/orders/helpers.ts",
     );
     expect(appHelperViolations).toHaveLength(1);
 
-    // 路由 API route.ts 允许使用 @pcfprio/hiweb-next/bff，但仍禁止功能内部深层导入
+    // 路由 API route.ts 允许使用 @jashanyng/hiweb-next/bff，但仍禁止功能内部深层导入
     expect(
       lintImports(
-        `import { parseJsonBody } from "@pcfprio/hiweb-next/bff";
+        `import { parseJsonBody } from "@jashanyng/hiweb-next/bff";
          import { saveOrder } from "@/features/orders/server";
          void [parseJsonBody, saveOrder];`,
         "src/app/api/orders/route.ts",
@@ -122,16 +122,16 @@ describe("tooling presets", () => {
       lintImports(
         `import { Page } from "@/app/page";
          import { Card } from "@/features/users/components/card";
-         import { createUpstreamClient } from "@pcfprio/hiweb-net/upstream-client";
+         import { createUpstreamClient } from "@jashanyng/hiweb-net/upstream-client";
          void [Page, Card, createUpstreamClient];`,
         "src/features/orders/server/queries.ts",
       ),
     ).toHaveLength(3);
 
-    // 3. 功能客户端代码：禁止 ./server/*、@/server/*、@/features/*/server、@pcfprio/hiweb-next/* 与非 UI hiweb
+    // 3. 功能客户端代码：禁止 ./server/*、@/server/*、@/features/*/server、@jashanyng/hiweb-next/* 与非 UI hiweb
     expect(
       lintImports(
-        `import { Table } from "@pcfprio/hiweb-suite/table";
+        `import { Table } from "@jashanyng/hiweb-suite/table";
          import { UserBadge } from "@/entities/user";
          import { api } from "@/shared/api/http";
          import { useOrders } from "../hooks/use-orders";
@@ -164,8 +164,8 @@ describe("tooling presets", () => {
          import { q2 } from "../server/queries";
          import { env } from "@/server/env";
          import { s } from "@/features/users/server";
-         import { bff } from "@pcfprio/hiweb-next/bff";
-         import { createLogger } from "@pcfprio/hiweb-base/logger";
+         import { bff } from "@jashanyng/hiweb-next/bff";
+         import { createLogger } from "@jashanyng/hiweb-base/logger";
          void [q, q2, env, s, bff, createLogger];`,
         clientFile,
       );
@@ -182,7 +182,7 @@ describe("tooling presets", () => {
     // 4. 实体层：禁止 app / features / server / 实体深层 / 非 UI hiweb
     expect(
       lintImports(
-        `import { Badge } from "@pcfprio/hiweb-suite/badge";
+        `import { Badge } from "@jashanyng/hiweb-suite/badge";
          import { formatDate } from "@/shared/lib/format";
          void [Badge, formatDate];`,
         "src/entities/user/index.ts",
@@ -193,7 +193,7 @@ describe("tooling presets", () => {
         `import { Order } from "@/features/orders";
          import { Item } from "@/entities/order/item";
          import { env } from "@/server/env";
-         import { createLogger } from "@pcfprio/hiweb-base/logger";
+         import { createLogger } from "@jashanyng/hiweb-base/logger";
          void [Order, Item, env, createLogger];`,
         "src/entities/user/index.ts",
       ),
@@ -202,16 +202,16 @@ describe("tooling presets", () => {
     // 5. 共享层：shared/api 与 shared/lib 允许适配非 UI hiweb，shared/ui 与 shared/hooks 仅限 hiweb-suite
     expect(
       lintImports(
-        `import { createBrowserApiClient } from "@pcfprio/hiweb-net/browser-client";
-         import { createLogger } from "@pcfprio/hiweb-base/logger";
+        `import { createBrowserApiClient } from "@jashanyng/hiweb-net/browser-client";
+         import { createLogger } from "@jashanyng/hiweb-base/logger";
          void [createBrowserApiClient, createLogger];`,
         "src/shared/api/http.ts",
       ),
     ).toEqual([]);
     expect(
       lintImports(
-        `import { createBrowserApiClient } from "@pcfprio/hiweb-net/browser-client";
-         import { Button } from "@pcfprio/hiweb-suite/button";
+        `import { createBrowserApiClient } from "@jashanyng/hiweb-net/browser-client";
+         import { Button } from "@jashanyng/hiweb-suite/button";
          void [createBrowserApiClient, Button];`,
         "src/shared/ui/custom-button.tsx",
       ),
@@ -226,10 +226,10 @@ describe("tooling presets", () => {
       ),
     ).toHaveLength(3);
 
-    // 6. 服务端基础层：允许 @/shared 与 @pcfprio/hiweb-*，禁止逆向依赖 app/features/entities
+    // 6. 服务端基础层：允许 @/shared 与 @jashanyng/hiweb-*，禁止逆向依赖 app/features/entities
     expect(
       lintImports(
-        `import { createDeploymentGuard } from "@pcfprio/hiweb-core/deployment";
+        `import { createDeploymentGuard } from "@jashanyng/hiweb-core/deployment";
          import { formatDate } from "@/shared/lib/format";
          void [createDeploymentGuard, formatDate];`,
         "src/server/deployment.ts",
@@ -259,7 +259,7 @@ describe("tooling presets", () => {
       `import { s } from "@/features/orders/server";
        import { internal } from "@/features/orders/components/list";
        import { env } from "@/server/env";
-       import { api } from "@pcfprio/hiweb-net/browser-client";
+       import { api } from "@jashanyng/hiweb-net/browser-client";
        void [s, internal, env, api];`,
       "src/routes/orders.tsx",
       { runtime: "spa" },

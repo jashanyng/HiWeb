@@ -282,28 +282,28 @@ importers:
 
   packages/core:
     dependencies:
-      '@pcfprio/hiweb-base':
+      '@jashanyng/hiweb-base':
         specifier: workspace:*
         version: link:../base
 
   packages/net:
     dependencies:
-      '@pcfprio/hiweb-base':
+      '@jashanyng/hiweb-base':
         specifier: workspace:*
         version: link:../base
-      '@pcfprio/hiweb-core':
+      '@jashanyng/hiweb-core':
         specifier: workspace:*
         version: link:../core
 
   packages/next:
     dependencies:
-      '@pcfprio/hiweb-base':
+      '@jashanyng/hiweb-base':
         specifier: workspace:*
         version: link:../base
-      '@pcfprio/hiweb-core':
+      '@jashanyng/hiweb-core':
         specifier: workspace:*
         version: link:../core
-      '@pcfprio/hiweb-net':
+      '@jashanyng/hiweb-net':
         specifier: workspace:*
         version: link:../net
       next:
@@ -318,7 +318,7 @@ importers:
 
   packages/store:
     dependencies:
-      '@pcfprio/hiweb-base':
+      '@jashanyng/hiweb-base':
         specifier: workspace:*
         version: link:../base
 
@@ -327,10 +327,10 @@ importers:
       '@base-ui/react':
         specifier: '>=1.3.0'
         version: 1.9.0(@types/react@19.3.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
-      '@pcfprio/hiweb-base':
+      '@jashanyng/hiweb-base':
         specifier: workspace:*
         version: link:../base
-      '@pcfprio/hiweb-store':
+      '@jashanyng/hiweb-store':
         specifier: workspace:*
         version: link:../store
       class-variance-authority:

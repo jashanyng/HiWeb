@@ -4,18 +4,18 @@
     "noEmit": true,
     "types": ["node"],
     "paths": {
-      "@pcfprio/hiweb-base": ["./packages/base/src/index.ts"],
-      "@pcfprio/hiweb-base/*": ["./packages/base/src/*.ts"],
-      "@pcfprio/hiweb-core": ["./packages/core/src/index.ts"],
-      "@pcfprio/hiweb-core/*": ["./packages/core/src/*.ts"],
-      "@pcfprio/hiweb-net": ["./packages/net/src/index.ts"],
-      "@pcfprio/hiweb-net/*": ["./packages/net/src/*.ts"],
-      "@pcfprio/hiweb-store": ["./packages/store/src/index.ts"],
-      "@pcfprio/hiweb-store/*": ["./packages/store/src/*.ts"],
-      "@pcfprio/hiweb-suite/*": ["./packages/suite/src/*.ts", "./packages/suite/src/*.tsx"],
-      "@pcfprio/hiweb-next/*": ["./packages/next/src/*.ts"],
-      "@pcfprio/hiweb-contract": ["./packages/contract/src/index.ts"],
-      "@pcfprio/hiweb-tooling/*": ["./packages/tooling/src/*.ts"]
+      "@jashanyng/hiweb-base": ["./packages/base/src/index.ts"],
+      "@jashanyng/hiweb-base/*": ["./packages/base/src/*.ts"],
+      "@jashanyng/hiweb-core": ["./packages/core/src/index.ts"],
+      "@jashanyng/hiweb-core/*": ["./packages/core/src/*.ts"],
+      "@jashanyng/hiweb-net": ["./packages/net/src/index.ts"],
+      "@jashanyng/hiweb-net/*": ["./packages/net/src/*.ts"],
+      "@jashanyng/hiweb-store": ["./packages/store/src/index.ts"],
+      "@jashanyng/hiweb-store/*": ["./packages/store/src/*.ts"],
+      "@jashanyng/hiweb-suite/*": ["./packages/suite/src/*.ts", "./packages/suite/src/*.tsx"],
+      "@jashanyng/hiweb-next/*": ["./packages/next/src/*.ts"],
+      "@jashanyng/hiweb-contract": ["./packages/contract/src/index.ts"],
+      "@jashanyng/hiweb-tooling/*": ["./packages/tooling/src/*.ts"]
     }
   },
   "include": ["packages/**/*.ts", "packages/**/*.tsx", "vitest.setup.ts"]

@@ -1,5 +1,5 @@
 {
-  "name": "@pcfprio/hiweb-next",
+  "name": "@jashanyng/hiweb-next",
   "version": "0.1.0",
   "description": "Thin Next.js 16 server-only, proxy, BFF, and RSC helpers built on HiWeb core/net.",
   "type": "module",
@@ -10,16 +10,16 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/pcfprio/HiWeb.git",
+    "url": "https://github.com/jashanyng/HiWeb.git",
     "directory": "packages/next"
   },
   "files": [
     "dist"
   ],
   "dependencies": {
-    "@pcfprio/hiweb-base": "workspace:*",
-    "@pcfprio/hiweb-core": "workspace:*",
-    "@pcfprio/hiweb-net": "workspace:*"
+    "@jashanyng/hiweb-base": "workspace:*",
+    "@jashanyng/hiweb-core": "workspace:*",
+    "@jashanyng/hiweb-net": "workspace:*"
   },
   "peerDependencies": {
     "next": ">=16.0.0",

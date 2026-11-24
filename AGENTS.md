@@ -12,13 +12,13 @@ HiWeb 是与任何具体项目或业务无关、面向公开分发标准的 Type
 
 1. **严格业务与项目无关**：本库绝不引入任何具体项目的域名、Cookie 前缀、环境变量前缀、业务角色枚举、固定后端接口路径或品牌色值。时区、语言、包络格式、密钥前缀与文案全部通过显式配置或工厂参数注入。
 2. **单向无环分层与契约隔离**：
-   - 首期仅允许 8 个高内聚子包：`@pcfprio/hiweb-base`、`@pcfprio/hiweb-core`、`@pcfprio/hiweb-net`、`@pcfprio/hiweb-store`、`@pcfprio/hiweb-suite`、`@pcfprio/hiweb-next`、`@pcfprio/hiweb-contract`、`@pcfprio/hiweb-tooling`。
+   - 首期仅允许 8 个高内聚子包：`@jashanyng/hiweb-base`、`@jashanyng/hiweb-core`、`@jashanyng/hiweb-net`、`@jashanyng/hiweb-store`、`@jashanyng/hiweb-suite`、`@jashanyng/hiweb-next`、`@jashanyng/hiweb-contract`、`@jashanyng/hiweb-tooling`。
    - **不设大杂烩聚合总包**：消费方按自身运行时边界显式安装所需子包。依赖关系必须严格单向无环，具体层级见 [`docs/architecture/packages.md`](docs/architecture/packages.md)。
    - 第三方库类型不穿透自有契约；React、Next.js、Base UI、Lucide、Sonner、Tailwind CSS 等通过 `peerDependencies` 适配，避免多实例冲突与冗余打包。
 3. **严守 Web 运行时边界**：
    - 清晰隔离纯同构 TS（`base` / `core` / `net`）、服务端专属（`next` 中以 `import "server-only"` 开头）、浏览器存储（`store` 含 SSR 安全降级）与 React 客户端组件（`suite` 交互组件第一行显式写 `"use client";`）。
    - **严禁模块级可变全局单例**：防止 SSR 多用户并发请求下产生状态串扰或数据泄漏；日志、埋点、错误上报与 API 客户端一律通过工厂显式创建并注入。
-   - **禁止破坏 Tree-shaking 的全量桶文件**：`@pcfprio/hiweb-suite` 通过精细子路径 `exports` 按组件导出，不建重 export 全部组件的根目录 barrel。
+   - **禁止破坏 Tree-shaking 的全量桶文件**：`@jashanyng/hiweb-suite` 通过精细子路径 `exports` 按组件导出，不建重 export 全部组件的根目录 barrel。
 4. **默认隐私与安全优先**：
    - 结构化日志默认自动脱敏敏感键名与认证头部格式；是否放宽脱敏由宿主在构造实例时显式声明并自负其责，本库不内置业务渠道或环境策略。
    - 埋点（`AnalyticsTracker`）与错误上报（`ErrorReporter`）首期仅在 `base` 沉淀纯 TS 契约与隐私同意门控（`PrivacyConsentStatus`）+ Noop/Console 适配，不预建无真实落地需求的厂商 SDK 包。
@@ -28,7 +28,7 @@ HiWeb 是与任何具体项目或业务无关、面向公开分发标准的 Type
 
 - **依赖基线**：采用 Node.js 26 LTS + pnpm Workspace + TypeScript 6 严格模式 + ESM。仓库自身开发依赖通过 `pnpm-workspace.yaml` 启用精确锁版本（`saveExact: true`）与延迟安装（`minimumReleaseAge: 1440`）；公开子包对外声明合理的 `peerDependencies` 版本区间。新增或升级外部依赖前先读取 [`docs/engineering/dependencies.md`](docs/engineering/dependencies.md)。
 - **分发目标与当前状态**：公开分发目标为 npm Registry（MIT License）。已正式发布到 npm 的版本号不可覆盖；**在维护者自用打磨且尚未公开发布阶段**，不保留废弃别名、兼容分支或迁移垫片，公开 API 与包结构可直接做破坏性演进并同步验证消费项目。
-- **UI 组件规范**：修改 `@pcfprio/hiweb-suite` 的设计令牌、主题切换或基础组件前，读取 [`docs/engineering/ui-components.md`](docs/engineering/ui-components.md)。
+- **UI 组件规范**：修改 `@jashanyng/hiweb-suite` 的设计令牌、主题切换或基础组件前，读取 [`docs/engineering/ui-components.md`](docs/engineering/ui-components.md)。
 - **同级源码与离线消费门禁**：消费项目在本地或未发版期间接入 HiWeb 时，必须遵守 [`docs/engineering/sibling-source-dependency.md`](docs/engineering/sibling-source-dependency.md) 的 40 位完整 Git SHA 版本锁与确定性 `.tgz` 同步门禁。
 
 ## 验证门禁
@@ -41,7 +41,7 @@ HiWeb 是与任何具体项目或业务无关、面向公开分发标准的 Type
 
 ### Issue tracker
 
-本仓库的 issue 与 spec 记录在 GitHub Issues（`pcfprio/HiWeb`），通过 `gh` CLI 操作。详见 `docs/agents/issue-tracker.md`。
+本仓库的 issue 与 spec 记录在 GitHub Issues（`jashanyng/HiWeb`），通过 `gh` CLI 操作。详见 `docs/agents/issue-tracker.md`。
 
 ### Triage labels
 

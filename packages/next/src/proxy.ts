@@ -1,4 +1,4 @@
-import { sanitizeNextPath } from "@pcfprio/hiweb-core/url";
+import { sanitizeNextPath } from "@jashanyng/hiweb-core/url";
 import { type NextRequest, NextResponse } from "next/server";
 
 import { applySecurityHeaders, type SecurityHeadersOptions } from "./headers.js";

@@ -1,4 +1,4 @@
-import { AppErrorException } from "@pcfprio/hiweb-base/errors";
+import { AppErrorException } from "@jashanyng/hiweb-base/errors";
 
 export type StorageArea = "local" | "session";
 

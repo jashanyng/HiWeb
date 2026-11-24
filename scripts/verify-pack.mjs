@@ -9,7 +9,7 @@ const manifestPath = path.join(root, "artifacts/manifest.json");
 const manifest = JSON.parse(readFileSync(manifestPath, "utf8"));
 const rootPkg = JSON.parse(readFileSync(path.join(root, "package.json"), "utf8"));
 
-const DEV_ONLY_PACKAGES = new Set(["@pcfprio/hiweb-contract", "@pcfprio/hiweb-tooling"]);
+const DEV_ONLY_PACKAGES = new Set(["@jashanyng/hiweb-contract", "@jashanyng/hiweb-tooling"]);
 
 function run(cmd, args, cwd, stdio = "inherit") {
   return execFileSync(cmd, args, { cwd, stdio, encoding: "utf8" });
@@ -83,7 +83,7 @@ function buildSharedConsumerFiles(consumerDir, pkgSpecs, extraOverrides = {}) {
   writeFileSync(path.join(consumerDir, "src/vite-env.d.ts"), `/// <reference types="vite/client" />\n`);
   writeFileSync(
     path.join(consumerDir, "src/styles.css"),
-    `@import "tailwindcss";\n@import "tw-animate-css";\n@import "@pcfprio/hiweb-suite/tokens.css";\n`,
+    `@import "tailwindcss";\n@import "tw-animate-css";\n@import "@jashanyng/hiweb-suite/tokens.css";\n`,
   );
   writeFileSync(
     path.join(consumerDir, "src/index.html"),
@@ -92,16 +92,16 @@ function buildSharedConsumerFiles(consumerDir, pkgSpecs, extraOverrides = {}) {
   writeFileSync(
     path.join(consumerDir, "src/app.tsx"),
     `import "./styles.css";
-import { createLogger } from "@pcfprio/hiweb-base/logger";
-import { sanitizeNextPath } from "@pcfprio/hiweb-core/url";
-import { createBrowserApiClient } from "@pcfprio/hiweb-net/browser-client";
-import { createBrowserStore } from "@pcfprio/hiweb-store/browser-store";
-import { Button } from "@pcfprio/hiweb-suite/button";
-import { Checkbox } from "@pcfprio/hiweb-suite/checkbox";
-import { ConfirmDialog } from "@pcfprio/hiweb-suite/confirm-dialog";
-import { SuiteAppShell } from "@pcfprio/hiweb-suite/shell";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@pcfprio/hiweb-suite/table";
-import { SuiteThemeToggle, ThemeProvider } from "@pcfprio/hiweb-suite/theme";
+import { createLogger } from "@jashanyng/hiweb-base/logger";
+import { sanitizeNextPath } from "@jashanyng/hiweb-core/url";
+import { createBrowserApiClient } from "@jashanyng/hiweb-net/browser-client";
+import { createBrowserStore } from "@jashanyng/hiweb-store/browser-store";
+import { Button } from "@jashanyng/hiweb-suite/button";
+import { Checkbox } from "@jashanyng/hiweb-suite/checkbox";
+import { ConfirmDialog } from "@jashanyng/hiweb-suite/confirm-dialog";
+import { SuiteAppShell } from "@jashanyng/hiweb-suite/shell";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@jashanyng/hiweb-suite/table";
+import { SuiteThemeToggle, ThemeProvider } from "@jashanyng/hiweb-suite/theme";
 
 const logger = createLogger({ service: "smoke" });
 logger.info("boot", { next: sanitizeNextPath("/ok") });
@@ -135,12 +135,12 @@ export function Demo() {
   );
   writeFileSync(
     path.join(consumerDir, "src/server-check.ts"),
-    `import { createExpiredSessionRedirect } from "@pcfprio/hiweb-next/bff";
-import { applySecurityHeaders, buildSecurityHeaders } from "@pcfprio/hiweb-next/headers";
-import { createSessionProxyHandler } from "@pcfprio/hiweb-next/proxy";
-import { runServerPageQuery } from "@pcfprio/hiweb-next/rsc";
-import { parseOpenApiDocument } from "@pcfprio/hiweb-contract";
-import { createCodeQualityRules, createLayeredImportRestrictions } from "@pcfprio/hiweb-tooling/eslint";
+    `import { createExpiredSessionRedirect } from "@jashanyng/hiweb-next/bff";
+import { applySecurityHeaders, buildSecurityHeaders } from "@jashanyng/hiweb-next/headers";
+import { createSessionProxyHandler } from "@jashanyng/hiweb-next/proxy";
+import { runServerPageQuery } from "@jashanyng/hiweb-next/rsc";
+import { parseOpenApiDocument } from "@jashanyng/hiweb-contract";
+import { createCodeQualityRules, createLayeredImportRestrictions } from "@jashanyng/hiweb-tooling/eslint";
 
 void [
   createExpiredSessionRedirect,
@@ -168,16 +168,16 @@ export default {
   writeFileSync(
     path.join(consumerDir, "runtime-smoke.mjs"),
     `import assert from "node:assert/strict";
-import { createLogger } from "@pcfprio/hiweb-base/logger";
-import { createSessionCipher } from "@pcfprio/hiweb-core/session-crypto";
-import { sanitizeNextPath } from "@pcfprio/hiweb-core/url";
-import { createStandardEnvelopeDecoder } from "@pcfprio/hiweb-net/envelope";
-import { buildSecurityHeaders } from "@pcfprio/hiweb-next/headers";
-import { createBrowserStore } from "@pcfprio/hiweb-store/browser-store";
-import { createThemeInitScript } from "@pcfprio/hiweb-suite/theme-script";
-import { parseOpenApiDocument } from "@pcfprio/hiweb-contract";
-import { createCodeQualityRules, createLayeredImportRestrictions } from "@pcfprio/hiweb-tooling/eslint";
-import { createPrettierPreset } from "@pcfprio/hiweb-tooling/prettier";
+import { createLogger } from "@jashanyng/hiweb-base/logger";
+import { createSessionCipher } from "@jashanyng/hiweb-core/session-crypto";
+import { sanitizeNextPath } from "@jashanyng/hiweb-core/url";
+import { createStandardEnvelopeDecoder } from "@jashanyng/hiweb-net/envelope";
+import { buildSecurityHeaders } from "@jashanyng/hiweb-next/headers";
+import { createBrowserStore } from "@jashanyng/hiweb-store/browser-store";
+import { createThemeInitScript } from "@jashanyng/hiweb-suite/theme-script";
+import { parseOpenApiDocument } from "@jashanyng/hiweb-contract";
+import { createCodeQualityRules, createLayeredImportRestrictions } from "@jashanyng/hiweb-tooling/eslint";
+import { createPrettierPreset } from "@jashanyng/hiweb-tooling/prettier";
 
 const lines = [];
 createLogger({ service: "smoke", sink: (_e, s) => lines.push(s) }).info("ok", { token: "abc" });
@@ -204,16 +204,19 @@ console.log("runtime-smoke: ok");
 
 function assertBuiltArtifactsInConsumer(consumerDir) {
   for (const clientFile of ["dialog.js", "confirm-dialog.js", "checkbox.js"]) {
-    const dist = readFileSync(path.join(consumerDir, "node_modules/@pcfprio/hiweb-suite/dist", clientFile), "utf8");
+    const dist = readFileSync(path.join(consumerDir, "node_modules/@jashanyng/hiweb-suite/dist", clientFile), "utf8");
     if (!dist.startsWith('"use client";') && !dist.startsWith("'use client';")) {
       throw new Error(`${clientFile} lost leading 'use client' directive`);
     }
   }
-  const bffDist = readFileSync(path.join(consumerDir, "node_modules/@pcfprio/hiweb-next/dist/bff.js"), "utf8");
+  const bffDist = readFileSync(path.join(consumerDir, "node_modules/@jashanyng/hiweb-next/dist/bff.js"), "utf8");
   if (!bffDist.startsWith('import "server-only";')) {
     throw new Error("bff.js lost leading import 'server-only'");
   }
-  const tokensDist = readFileSync(path.join(consumerDir, "node_modules/@pcfprio/hiweb-suite/dist/tokens.css"), "utf8");
+  const tokensDist = readFileSync(
+    path.join(consumerDir, "node_modules/@jashanyng/hiweb-suite/dist/tokens.css"),
+    "utf8",
+  );
   if (!tokensDist.includes('@source "./";')) {
     throw new Error("tokens.css missing @source directive");
   }

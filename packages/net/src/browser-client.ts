@@ -1,4 +1,4 @@
-import { buildUrlWithQuery, type QueryParamValue } from "@pcfprio/hiweb-core/url";
+import { buildUrlWithQuery, type QueryParamValue } from "@jashanyng/hiweb-core/url";
 
 import { createStandardEnvelopeDecoder, type EnvelopeDecoder } from "./envelope.js";
 import { ClientApiError } from "./errors.js";

@@ -6,14 +6,14 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const packagesDir = path.join(root, "packages");
 
 const ALLOWED_INTERNAL_DEPS = {
-  "@pcfprio/hiweb-base": new Set([]),
-  "@pcfprio/hiweb-core": new Set(["@pcfprio/hiweb-base"]),
-  "@pcfprio/hiweb-net": new Set(["@pcfprio/hiweb-base", "@pcfprio/hiweb-core"]),
-  "@pcfprio/hiweb-store": new Set(["@pcfprio/hiweb-base"]),
-  "@pcfprio/hiweb-suite": new Set(["@pcfprio/hiweb-base", "@pcfprio/hiweb-store"]),
-  "@pcfprio/hiweb-next": new Set(["@pcfprio/hiweb-base", "@pcfprio/hiweb-core", "@pcfprio/hiweb-net"]),
-  "@pcfprio/hiweb-contract": new Set([]),
-  "@pcfprio/hiweb-tooling": new Set([]),
+  "@jashanyng/hiweb-base": new Set([]),
+  "@jashanyng/hiweb-core": new Set(["@jashanyng/hiweb-base"]),
+  "@jashanyng/hiweb-net": new Set(["@jashanyng/hiweb-base", "@jashanyng/hiweb-core"]),
+  "@jashanyng/hiweb-store": new Set(["@jashanyng/hiweb-base"]),
+  "@jashanyng/hiweb-suite": new Set(["@jashanyng/hiweb-base", "@jashanyng/hiweb-store"]),
+  "@jashanyng/hiweb-next": new Set(["@jashanyng/hiweb-base", "@jashanyng/hiweb-core", "@jashanyng/hiweb-net"]),
+  "@jashanyng/hiweb-contract": new Set([]),
+  "@jashanyng/hiweb-tooling": new Set([]),
 };
 
 const FORBIDDEN_BUSINESS_TERMS = [
@@ -35,7 +35,7 @@ for (const dir of readdirSync(packagesDir)) {
   if (!allowed) {
     throw new Error(`Unexpected package "${pkg.name}" in packages/${dir}`);
   }
-  const internalDeps = Object.keys(pkg.dependencies ?? {}).filter((d) => d.startsWith("@pcfprio/hiweb-"));
+  const internalDeps = Object.keys(pkg.dependencies ?? {}).filter((d) => d.startsWith("@jashanyng/hiweb-"));
   for (const dep of internalDeps) {
     if (!allowed.has(dep)) {
       throw new Error(`Forbidden internal dependency: ${pkg.name} -> ${dep}`);

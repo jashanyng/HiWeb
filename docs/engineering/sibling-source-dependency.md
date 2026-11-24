@@ -9,9 +9,9 @@
    - `schemaVersion`（固定为 `1`）与 HiWeb 公开仓库地址 `repository`；
    - `commitSha`：**40 位完整 Git commit SHA**（分支名、tag、本地 `HEAD` 或未提交改动不能代替该锁）；
    - `packages`：按消费仓实际声明的直接依赖及其内部传递闭包所需的子包清单，每项仅记录 `version`、`tarball`（文件名）与 64 位 `sha256` 摘要。
-3. 消费项目通过 `package.json` 声明实际消费的直接 `@pcfprio/hiweb-*` 包，并在 `pnpm-workspace.yaml#overrides` 中将闭包内全部所需子包锁定为 `"file:./vendor/hiweb/<tarball>"`，同时提交 `pnpm-lock.yaml` 与 `vendor/hiweb/*.tgz`，确保单仓离线 `pnpm install --frozen-lockfile`、Docker 构建与单仓 CI 100% 自洽。
+3. 消费项目通过 `package.json` 声明实际消费的直接 `@jashanyng/hiweb-*` 包，并在 `pnpm-workspace.yaml#overrides` 中将闭包内全部所需子包锁定为 `"file:./vendor/hiweb/<tarball>"`，同时提交 `pnpm-lock.yaml` 与 `vendor/hiweb/*.tgz`，确保单仓离线 `pnpm install --frozen-lockfile`、Docker 构建与单仓 CI 100% 自洽。
 4. `scripts/hiweb-guard.mjs` 是唯一权威、零第三方依赖的守护脚本，其 SHA-256 哈希写入 `artifacts/manifest.json#guard`。消费仓通过 `--sync` 自动复制更新 `scripts/hiweb-guard.mjs`，杜绝多仓副本分叉。
-5. 消费项目自身代码只允许从公开包名及 `exports` 声明的子路径导入（例如 `@pcfprio/hiweb-suite/button`），严禁直接引用 `../HiWeb/packages/*/src` 内部路径。
+5. 消费项目自身代码只允许从公开包名及 `exports` 声明的子路径导入（例如 `@jashanyng/hiweb-suite/button`），严禁直接引用 `../HiWeb/packages/*/src` 内部路径。
 
 ## 必须接入的硬性门禁
 

@@ -1,8 +1,8 @@
 import "server-only";
 
-import { AppErrorException } from "@pcfprio/hiweb-base/errors";
-import { extractClientIp, isSameOrigin, type SameOriginOptions } from "@pcfprio/hiweb-core/security";
-import { sanitizeNextPath } from "@pcfprio/hiweb-core/url";
+import { AppErrorException } from "@jashanyng/hiweb-base/errors";
+import { extractClientIp, isSameOrigin, type SameOriginOptions } from "@jashanyng/hiweb-core/security";
+import { sanitizeNextPath } from "@jashanyng/hiweb-core/url";
 import { NextResponse } from "next/server";
 
 export class BffInputError extends AppErrorException {
