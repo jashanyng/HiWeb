@@ -1,6 +1,6 @@
 {
   "name": "@jashanyng/hiweb-store",
-  "version": "0.1.0",
+  "version": "0.0.1",
   "description": "SSR-safe, namespaced, schema-validated non-sensitive browser storage for HiWeb.",
   "type": "module",
   "license": "MIT",

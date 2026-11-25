@@ -1,6 +1,6 @@
 {
   "name": "@jashanyng/hiweb-base",
-  "version": "0.1.0",
+  "version": "0.0.1",
   "description": "Zero-dependency foundational contracts, redacted structured logger, analytics/error-reporting ports, and locale/timezone formatters for HiWeb.",
   "type": "module",
   "license": "MIT",

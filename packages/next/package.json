@@ -1,6 +1,6 @@
 {
   "name": "@jashanyng/hiweb-next",
-  "version": "0.1.0",
+  "version": "0.0.1",
   "description": "Thin Next.js 16 server-only, proxy, BFF, and RSC helpers built on HiWeb core/net.",
   "type": "module",
   "license": "MIT",

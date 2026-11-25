@@ -1,6 +1,6 @@
 {
   "name": "@jashanyng/hiweb-core",
-  "version": "0.1.0",
+  "version": "0.0.1",
   "description": "Isomorphic Web security primitives: Web Crypto AES-256-GCM session cipher, safe URL/redirect validation, origin/CSRF guards, rate limiting, and deployment guards.",
   "type": "module",
   "license": "MIT",

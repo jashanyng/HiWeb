@@ -1,6 +1,6 @@
 {
   "name": "@jashanyng/hiweb-tooling",
-  "version": "0.1.0",
+  "version": "0.0.1",
   "description": "Reusable ESLint architectural boundary presets, Prettier presets, and Vitest config helpers for HiWeb.",
   "type": "module",
   "license": "MIT",

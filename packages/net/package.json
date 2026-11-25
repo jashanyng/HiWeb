@@ -1,6 +1,6 @@
 {
   "name": "@jashanyng/hiweb-net",
-  "version": "0.1.0",
+  "version": "0.0.1",
   "description": "Isomorphic fetch HTTP clients, pluggable envelope decoders, upstream guard integration, and SSE stream parser for HiWeb.",
   "type": "module",
   "license": "MIT",

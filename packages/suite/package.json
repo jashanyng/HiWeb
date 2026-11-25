@@ -1,6 +1,6 @@
 {
   "name": "@jashanyng/hiweb-suite",
-  "version": "0.1.0",
+  "version": "0.0.1",
   "description": "Business-neutral React 19 + Tailwind CSS v4 + Base UI component suite, theme primitives, pagination, and shell primitives for HiWeb.",
   "type": "module",
   "license": "MIT",

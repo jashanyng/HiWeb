@@ -1,6 +1,6 @@
 {
   "name": "@jashanyng/hiweb-contract",
-  "version": "0.1.0",
+  "version": "0.0.1",
   "description": "Offline OpenAPI YAML to Zod v4 schema contract drift verification engine for HiWeb.",
   "type": "module",
   "license": "MIT",
