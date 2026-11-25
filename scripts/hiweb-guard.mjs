@@ -20,6 +20,7 @@ export const HIWEB_LOCK_SCHEMA_VERSION = 1;
 const HIWEB_PKG_PREFIX = "@jashanyng/hiweb-";
 const SHA1_HEX_RE = /^[0-9a-f]{40}$/;
 const SHA256_HEX_RE = /^[0-9a-f]{64}$/;
+const BARE_SEMVER_RE = /^\d+\.\d+\.\d+$/;
 
 /** @param {string} filePath */
 export function sha256File(filePath) {
@@ -96,8 +97,8 @@ function validateLockedPackageEntry(entry, pkgName, sourceLabel) {
   if ("path" in entry) {
     throw new Error(`${sourceLabel} 中 ${pkgName} 包含已废除的 path 字段，请重新执行 --sync`);
   }
-  if (typeof entry.version !== "string" || !entry.version) {
-    throw new Error(`${sourceLabel} 中 ${pkgName} 缺少有效 version`);
+  if (typeof entry.version !== "string" || !BARE_SEMVER_RE.test(entry.version)) {
+    throw new Error(`${sourceLabel} 中 ${pkgName} 的 version 必须为裸 x.y.z 格式：${String(entry.version)}`);
   }
   assertValidTarballName(entry.tarball, pkgName);
   if (typeof entry.sha256 !== "string" || !SHA256_HEX_RE.test(entry.sha256)) {

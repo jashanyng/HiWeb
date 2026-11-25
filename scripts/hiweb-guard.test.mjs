@@ -303,6 +303,45 @@ describe("hiweb-guard", () => {
     expect(() => verifyHiweb({ rootDir: consumerDir, hiwebDir, requireRemote: true })).toThrow(/远端|HiWeb|无法/);
   });
 
+  it("拒绝带 v 前缀或预发布后缀的非法包版本（v0.1.0 / 0.1.0-alpha.1）", () => {
+    for (const invalidVersion of ["v0.1.0", "0.1.0-alpha.1"]) {
+      const baseDir = makeTempDir("hiweb-guard-semver-");
+      const { hiwebDir } = createFakeHiwebFixture(baseDir);
+      const consumerDir = path.join(baseDir, "AppConsumer");
+      mkdirSync(consumerDir, { recursive: true });
+      writeFileSync(
+        path.join(consumerDir, "package.json"),
+        JSON.stringify({
+          name: "app-consumer",
+          private: true,
+          dependencies: { "@jashanyng/hiweb-base": "file:./vendor/hiweb/old.tgz" },
+        }),
+        "utf8",
+      );
+      writeFileSync(path.join(consumerDir, "pnpm-workspace.yaml"), "saveExact: true\n", "utf8");
+      syncHiweb({ rootDir: consumerDir, hiwebDir });
+      writeFakePnpmLock(consumerDir, { "@jashanyng/hiweb-base": "jashanyng-hiweb-base-0.1.0.tgz" });
+
+      // 1. hiweb.lock.json 中含非法 version -> verifyHiweb 拒绝
+      const lockPath = path.join(consumerDir, "hiweb.lock.json");
+      const lock = JSON.parse(readFileSync(lockPath, "utf8"));
+      const origLockText = readFileSync(lockPath, "utf8");
+      lock.packages["@jashanyng/hiweb-base"].version = invalidVersion;
+      writeFileSync(lockPath, JSON.stringify(lock, null, 2), "utf8");
+      expect(() => verifyHiweb({ rootDir: consumerDir, hiwebDir })).toThrow(/裸 x\.y\.z|version/i);
+      writeFileSync(lockPath, origLockText, "utf8");
+
+      // 2. manifest.json 中含非法 version -> syncHiweb 拒绝
+      const manifestPath = path.join(hiwebDir, "artifacts/manifest.json");
+      const manifest = JSON.parse(readFileSync(manifestPath, "utf8"));
+      manifest.packages["@jashanyng/hiweb-base"].version = invalidVersion;
+      writeFileSync(manifestPath, JSON.stringify(manifest, null, 2), "utf8");
+      git(hiwebDir, ["add", "artifacts/manifest.json"]);
+      git(hiwebDir, ["commit", "-m", `invalid version ${invalidVersion}`]);
+      expect(() => syncHiweb({ rootDir: consumerDir, hiwebDir })).toThrow(/裸 x\.y\.z|version/i);
+    }
+  });
+
   it("支持 .git linked worktree 自动回落解析主工作区同级 HiWeb 目录", () => {
     const baseDir = makeTempDir("hiweb-guard-wt-");
     const { hiwebDir, commitSha } = createFakeHiwebFixture(baseDir);

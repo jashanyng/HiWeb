@@ -17,6 +17,7 @@
     "test:unit": "vitest run",
     "pack:artifacts": "node scripts/pack-artifacts.mjs",
     "verify:pack": "node scripts/verify-pack.mjs",
+    "version:bump": "node scripts/bump-version.mjs",
     "check": "pnpm run format:check && pnpm run lint && pnpm run typecheck && pnpm run test:unit && pnpm run build && pnpm run pack:artifacts && pnpm run verify:pack"
   },
   "devDependencies": {
