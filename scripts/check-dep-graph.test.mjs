@@ -76,4 +76,21 @@ describe("check-dep-graph", () => {
     });
     expect(() => checkDepGraph(pkgMismatch)).toThrow(/一致|version/i);
   });
+
+  it("拒绝越界内部依赖与未知工作区子包", () => {
+    const badDep = makeTempWorkspace("0.0.1", {
+      base: {
+        name: "@jashanyng/hiweb-base",
+        version: "0.0.1",
+        dependencies: { "@jashanyng/hiweb-core": "workspace:*" },
+      },
+      core: { name: "@jashanyng/hiweb-core", version: "0.0.1" },
+    });
+    expect(() => checkDepGraph(badDep)).toThrow(/Forbidden internal dependency/);
+
+    const unknownPkg = makeTempWorkspace("0.0.1", {
+      extra: { name: "@jashanyng/hiweb-unknown", version: "0.0.1" },
+    });
+    expect(() => checkDepGraph(unknownPkg)).toThrow(/Unexpected package/);
+  });
 });

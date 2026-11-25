@@ -48,7 +48,7 @@ function walkSourceFiles(dir) {
 }
 
 /**
- * 校验工作区根与子包版本号一致性及裸格式、内部依赖拓扑无环、以及无业务特定术语泄漏。
+ * 校验工作区根与子包版本号一致性及裸格式、内部依赖拓扑无环及无业务特定术语泄漏。
  * @param {string} rootDir
  */
 export function checkDepGraph(rootDir) {

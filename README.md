@@ -22,4 +22,4 @@ pnpm install --frozen-lockfile
 pnpm run check
 ```
 
-更多工程文档见 [`docs/README.md`](docs/README.md)。
+更多工程文档见 [`docs/README.md`](docs/README.md)，版本演进与兼容契约见 [`CHANGELOG.md`](CHANGELOG.md) 与 [`docs/compatibility.md`](docs/compatibility.md)。

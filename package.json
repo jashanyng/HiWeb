@@ -11,7 +11,7 @@
   "scripts": {
     "build": "tsc -b tsconfig.build.json && node scripts/copy-assets.mjs",
     "typecheck": "tsc --noEmit -p tsconfig.typecheck.json",
-    "lint": "eslint . && node scripts/check-dep-graph.mjs",
+    "lint": "eslint . && node scripts/check-dep-graph.mjs && node scripts/governance-docs.mjs",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "test:unit": "vitest run",

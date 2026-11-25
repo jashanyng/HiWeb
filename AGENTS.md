@@ -27,7 +27,8 @@ HiWeb 是与任何具体项目或业务无关、面向公开分发标准的 Type
 ## 演进生命周期与版本规则
 
 - **当前阶段与基线**：当前处于**制作期**，未发布基线为裸格式 `0.0.1`（公开分发目标为 npm Registry，MIT License；制作期日常提交不打 Git 标签、不向 npm 发布）。
-- **裸 `x.y.z` 版本与升版门禁**：根工程与全部公开子包统一使用无 `v` 前缀、无预发布后缀的裸 `x.y.z`（由 `scripts/check-dep-graph.mjs` 强制校验）；改版统一经 `pnpm run version:bump` 执行，AI 仅可递增 `z`，切换演进阶段、修改 `x`/`y`（须传 `--allow-xy-bump`）、打标签或发 npm 须获维护者明确同意。
+- **裸 `x.y.z` 版本与升版门禁**：根工程与全部公开子包统一使用无 `v` 前缀、无预发布后缀的裸 `x.y.z`（由 `scripts/check-dep-graph.mjs` 强制校验；根 [`CHANGELOG.md`](CHANGELOG.md) 与 [`docs/compatibility.md`](docs/compatibility.md) 版本同步由 `scripts/governance-docs.mjs` 强制校验）；改版统一经 `pnpm run version:bump` 执行，脚本会调用 `scripts/governance-docs.mjs` 自动将根 [`CHANGELOG.md`](CHANGELOG.md) 中 `## [Unreleased]` 正文归档至目标版本节（为空时填入 `- 版本号对齐（无行为变更）。`）。AI 仅可递增 `z`，切换演进阶段、修改 `x`/`y`（须传 `--allow-xy-bump`）、打标签或发 npm 须获维护者明确同意。
+- **治理文档同步维护**：修改公开子包 API、导出边界、行为契约或工具链约束时，必须同步更新根 [`CHANGELOG.md`](CHANGELOG.md) 的 `## [Unreleased]`；变更运行环境/依赖基线、接入方式或跨版本兼容性契约时，必须同步更新 [`docs/compatibility.md`](docs/compatibility.md) 与根 [`README.md`](README.md)。
 - **规则触发指针**：调整子包结构或接口兼容性、跨项目沉淀通用能力、评估维护期新增功能、或切换演进阶段/`x.y.z` 版本批次前，读取 [`../tech-specs/common/adoption.md#4-效率库准入规则与两阶段门禁`](../tech-specs/common/adoption.md#4-效率库准入规则与两阶段门禁)（本机无同级目录时回退读取 GitHub `jashanyng/tech-specs` 同路径；与消费端两阶段依赖门禁正交）。
 
 ## 依赖、组件与离线消费门禁
@@ -38,7 +39,7 @@ HiWeb 是与任何具体项目或业务无关、面向公开分发标准的 Type
 
 ## 验证门禁
 
-- 修改源码、配置、依赖或公开导出后，必须运行全量检查：`pnpm run check`（覆盖 `format:check`、`lint`、依赖环与敏感词检查、`typecheck`、`test:unit`、`build`、`.tgz` 打包与独立 `pnpm` / `npm` 消费工程实测验证）。
+- 修改源码、配置、依赖、公开导出或版本/治理文档后，必须运行全量检查：`pnpm run check`（覆盖 `format:check`、`lint`（含 `scripts/check-dep-graph.mjs` 版本/依赖环/禁用业务词校验与 `scripts/governance-docs.mjs` 的 `CHANGELOG.md`/`docs/compatibility.md` 版本同步检查）、`typecheck`、`test:unit`、`build`、`.tgz` 打包与独立 `pnpm` / `npm` 消费工程实测验证）。
 - 文档目录结构与维护规范见 [`docs/README.md`](docs/README.md)。
 - 保留工作区无关改动，严禁秘密入库。
 

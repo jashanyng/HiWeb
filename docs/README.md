@@ -9,6 +9,9 @@
   - [外部依赖准入与版本锁定](engineering/dependencies.md)
   - [UI 组件、设计令牌与主题契约](engineering/ui-components.md)
   - [消费项目的同级源码与版本锁门禁](engineering/sibling-source-dependency.md)
+- **版本与兼容性治理**
+  - [变更日志（Changelog）](../CHANGELOG.md)
+  - [兼容性矩阵与版本契约](compatibility.md)
 - **智能体协作（Agent Skills）**
   - [Issue 跟踪约定](agents/issue-tracker.md)
   - [Triage 标签映射](agents/triage-labels.md)

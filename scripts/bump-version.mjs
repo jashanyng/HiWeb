@@ -2,6 +2,8 @@ import { existsSync, readdirSync, readFileSync, realpathSync, writeFileSync } fr
 import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
+import { archiveChangelog } from "./governance-docs.mjs";
+
 const BARE_SEMVER_RE = /^\d+\.\d+\.\d+$/;
 const USAGE = "Usage: node scripts/bump-version.mjs [--root <dir>] [--allow-xy-bump] <version>";
 
@@ -60,6 +62,18 @@ function parseCliArgs(argv) {
   }
 
   return { allowXyBump, help, rootDir, positional };
+}
+
+/**
+ * 格式化本地日期为 YYYY-MM-DD。
+ * @param {Date} [now]
+ * @returns {string}
+ */
+function formatLocalDate(now = new Date()) {
+  const year = String(now.getFullYear());
+  const month = String(now.getMonth() + 1).padStart(2, "0");
+  const day = String(now.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
 }
 
 /**
@@ -154,13 +168,38 @@ export function runBumpVersion(argv, io = {}) {
     return 1;
   }
 
-  for (const item of targetsToUpdate) {
-    item.pkg.version = targetVersion.raw;
-    writeFileSync(item.filePath, `${JSON.stringify(item.pkg, null, 2)}\n`, "utf8");
+  const changelogPath = path.join(rootDir, "CHANGELOG.md");
+  if (!existsSync(changelogPath)) {
+    stderr(`缺少根 CHANGELOG.md：${changelogPath}`);
+    return 1;
+  }
+
+  let nextChangelog;
+  try {
+    nextChangelog = archiveChangelog(readFileSync(changelogPath, "utf8"), targetVersion.raw, formatLocalDate());
+  } catch (err) {
+    stderr(err instanceof Error ? err.message : String(err));
+    return 1;
+  }
+
+  const originals = [];
+  try {
+    for (const item of targetsToUpdate) {
+      originals.push({ filePath: item.filePath, raw: readFileSync(item.filePath, "utf8") });
+      item.pkg.version = targetVersion.raw;
+      writeFileSync(item.filePath, `${JSON.stringify(item.pkg, null, 2)}\n`, "utf8");
+    }
+    originals.push({ filePath: changelogPath, raw: readFileSync(changelogPath, "utf8") });
+    writeFileSync(changelogPath, nextChangelog, "utf8");
+  } catch (err) {
+    for (const entry of originals) {
+      writeFileSync(entry.filePath, entry.raw, "utf8");
+    }
+    throw err;
   }
 
   stdout(
-    `bump-version: 已将根与 ${targetsToUpdate.length - 1} 个公开子包由 ${rootVersion.raw} 更新至 ${targetVersion.raw}`,
+    `bump-version: 已将根与 ${targetsToUpdate.length - 1} 个公开子包由 ${rootVersion.raw} 更新至 ${targetVersion.raw}，并归档 CHANGELOG.md`,
   );
   return 0;
 }
