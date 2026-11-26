@@ -371,4 +371,106 @@ describe("hiweb-guard", () => {
     writeFakePnpmLock(wtDir, { "@jashanyng/hiweb-base": "jashanyng-hiweb-base-0.1.0.tgz" });
     expect(verifyHiweb({ rootDir: wtDir }).commitSha).toBe(commitSha);
   });
+
+  it("支持多端单仓一级及深层子目录通过 Git 仓库根父目录定位同级 HiWeb", () => {
+    const baseDir = makeTempDir("hiweb-guard-monorepo-");
+    const { hiwebDir, commitSha } = createFakeHiwebFixture(baseDir);
+
+    const monorepoDir = path.join(baseDir, "Monorepo");
+    initGitRepo(monorepoDir, {
+      "console/package.json": JSON.stringify({
+        name: "monorepo-console",
+        private: true,
+        dependencies: { "@jashanyng/hiweb-base": "file:./vendor/hiweb/old.tgz" },
+      }),
+      "console/pnpm-workspace.yaml": "saveExact: true\n",
+      "apps/web/package.json": JSON.stringify({
+        name: "monorepo-apps-web",
+        private: true,
+        dependencies: { "@jashanyng/hiweb-base": "file:./vendor/hiweb/old.tgz" },
+      }),
+    });
+
+    const consoleDir = path.join(monorepoDir, "console");
+    const deepWebDir = path.join(monorepoDir, "apps", "web");
+
+    expect(realpathSync(resolveDefaultHiwebDir(consoleDir))).toBe(realpathSync(hiwebDir));
+    expect(realpathSync(resolveDefaultHiwebDir(deepWebDir))).toBe(realpathSync(hiwebDir));
+
+    const lock = syncHiweb({ rootDir: consoleDir });
+    expect(lock.commitSha).toBe(commitSha);
+    writeFakePnpmLock(consoleDir, { "@jashanyng/hiweb-base": "jashanyng-hiweb-base-0.1.0.tgz" });
+    expect(verifyHiweb({ rootDir: consoleDir }).commitSha).toBe(commitSha);
+
+    // 验证 HIWEB_DIR 显式覆盖优先级高于 Git 根定位
+    const overrideDir = path.join(baseDir, "CustomHiWeb");
+    mkdirSync(overrideDir, { recursive: true });
+    const prevEnv = process.env.HIWEB_DIR;
+    process.env.HIWEB_DIR = "../../CustomHiWeb";
+    try {
+      expect(realpathSync(resolveDefaultHiwebDir(consoleDir))).toBe(realpathSync(overrideDir));
+    } finally {
+      if (prevEnv === undefined) delete process.env.HIWEB_DIR;
+      else process.env.HIWEB_DIR = prevEnv;
+    }
+  });
+
+  it("支持多端单仓 linked worktree 下子目录回落定位至主仓父目录的 HiWeb", () => {
+    const baseDir = makeTempDir("hiweb-guard-mono-wt-");
+    const { hiwebDir, commitSha } = createFakeHiwebFixture(baseDir);
+
+    const mainMonorepo = path.join(baseDir, "MainMonorepo");
+    initGitRepo(mainMonorepo, {
+      "console/package.json": JSON.stringify({
+        name: "monorepo-console",
+        private: true,
+        dependencies: { "@jashanyng/hiweb-base": "file:./vendor/hiweb/old.tgz" },
+      }),
+      "console/pnpm-workspace.yaml": "saveExact: true\n",
+    });
+
+    const nestedParent = path.join(baseDir, "isolated-worktrees");
+    mkdirSync(nestedParent, { recursive: true });
+    const wtMonorepo = path.join(nestedParent, "wt-monorepo");
+    git(mainMonorepo, ["worktree", "add", "-b", "feat/mono-wt", wtMonorepo]);
+
+    const wtConsoleDir = path.join(wtMonorepo, "console");
+    expect(realpathSync(resolveDefaultHiwebDir(wtConsoleDir))).toBe(realpathSync(hiwebDir));
+
+    const lock = syncHiweb({ rootDir: wtConsoleDir });
+    expect(lock.commitSha).toBe(commitSha);
+    writeFakePnpmLock(wtConsoleDir, { "@jashanyng/hiweb-base": "jashanyng-hiweb-base-0.1.0.tgz" });
+    expect(verifyHiweb({ rootDir: wtConsoleDir }).commitSha).toBe(commitSha);
+  });
+
+  it("无同级 HiWeb 时按 Git 根父目录或直接同级路径回退并正常进入离线校验", () => {
+    const baseDir = makeTempDir("hiweb-guard-fallback-");
+    const { hiwebDir, commitSha } = createFakeHiwebFixture(baseDir);
+
+    const monorepoDir = path.join(baseDir, "Monorepo");
+    initGitRepo(monorepoDir, {
+      "console/package.json": JSON.stringify({
+        name: "monorepo-console",
+        private: true,
+        dependencies: { "@jashanyng/hiweb-base": "file:./vendor/hiweb/old.tgz" },
+      }),
+      "console/pnpm-workspace.yaml": "saveExact: true\n",
+    });
+
+    const consoleDir = path.join(monorepoDir, "console");
+    syncHiweb({ rootDir: consoleDir });
+    writeFakePnpmLock(consoleDir, { "@jashanyng/hiweb-base": "jashanyng-hiweb-base-0.1.0.tgz" });
+
+    // 删除同级 HiWeb 模拟云端单仓 CI 环境
+    rmSync(hiwebDir, { recursive: true, force: true });
+
+    const resolvedMonoFallback = resolveDefaultHiwebDir(consoleDir);
+    expect(resolvedMonoFallback).toBe(path.join(realpathSync(baseDir), "HiWeb"));
+    expect(verifyHiweb({ rootDir: consoleDir }).commitSha).toBe(commitSha);
+
+    // 无 .git 测试目录且无同级 HiWeb 时回退到 directSibling（../HiWeb）
+    const nonGitDir = path.join(baseDir, "PlainConsumer");
+    mkdirSync(nonGitDir, { recursive: true });
+    expect(resolveDefaultHiwebDir(nonGitDir)).toBe(path.resolve(nonGitDir, "../HiWeb"));
+  });
 });

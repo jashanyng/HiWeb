@@ -108,13 +108,89 @@ function validateLockedPackageEntry(entry, pkgName, sourceLabel) {
 }
 
 /**
- * 解析同级 HiWeb 目录；若当前为 .git linked worktree 且直接同级缺失，则回落至主工作区同级目录。
+ * 尝试在指定目录执行 git 命令；失败时返回 null，不中断回落解析。
+ * @param {string} cwd
+ * @param {string[]} args
+ * @returns {string | null}
+ */
+function tryRunGit(cwd, args) {
+  try {
+    return runGit(cwd, args) || null;
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * 从 .git 文件指针解析 linked worktree 对应的主仓库 .git 目录（无 git CLI 时的兜底）。
+ * @param {string} startDir
+ * @returns {string | null}
+ */
+function findCommonGitDirFromDotGitFile(startDir) {
+  let current = startDir;
+  while (true) {
+    const dotGitPath = path.join(current, ".git");
+    try {
+      if (existsSync(dotGitPath) && statSync(dotGitPath).isFile()) {
+        const pointer = readFileSync(dotGitPath, "utf8").trim();
+        if (!pointer.startsWith("gitdir:")) return null;
+        const rawGitDir = pointer.slice("gitdir:".length).trim();
+        const gitDir = path.isAbsolute(rawGitDir) ? path.resolve(rawGitDir) : path.resolve(current, rawGitDir);
+
+        const commonDirFile = path.join(gitDir, "commondir");
+        if (existsSync(commonDirFile)) {
+          const rawCommon = readFileSync(commonDirFile, "utf8").trim();
+          return path.isAbsolute(rawCommon) ? path.resolve(rawCommon) : path.resolve(gitDir, rawCommon);
+        }
+        if (path.basename(path.dirname(gitDir)) === "worktrees") {
+          return path.resolve(gitDir, "../..");
+        }
+        return null;
+      }
+      if (existsSync(dotGitPath) && statSync(dotGitPath).isDirectory()) {
+        return null;
+      }
+    } catch {
+      return null;
+    }
+
+    const parent = path.dirname(current);
+    if (parent === current) return null;
+    current = parent;
+  }
+}
+
+/**
+ * 解析当前工作区所属的主 worktree 仓库根目录。
+ * @param {string} resolvedRoot
+ * @returns {string | null}
+ */
+function resolveMainWorktreeRepoRoot(resolvedRoot) {
+  let commonGitDir = tryRunGit(resolvedRoot, ["rev-parse", "--path-format=absolute", "--git-common-dir"]);
+  if (!commonGitDir) {
+    const rawCommon = tryRunGit(resolvedRoot, ["rev-parse", "--git-common-dir"]);
+    if (rawCommon) {
+      commonGitDir = path.isAbsolute(rawCommon) ? path.resolve(rawCommon) : path.resolve(resolvedRoot, rawCommon);
+    }
+  }
+  if (!commonGitDir) {
+    commonGitDir = findCommonGitDirFromDotGitFile(resolvedRoot);
+  }
+  if (!commonGitDir || path.basename(commonGitDir) !== ".git") {
+    return null;
+  }
+  return path.dirname(commonGitDir);
+}
+
+/**
+ * 解析同级 HiWeb 目录，兼顾独立单仓、多端单仓各级子目录与 linked worktree。
  * @param {string} rootDir
  */
 export function resolveDefaultHiwebDir(rootDir) {
   const resolvedRoot = path.resolve(rootDir);
-  if (process.env.HIWEB_DIR) {
-    return path.resolve(resolvedRoot, process.env.HIWEB_DIR);
+  const envHiwebDir = process.env.HIWEB_DIR?.trim();
+  if (envHiwebDir) {
+    return path.resolve(resolvedRoot, envHiwebDir);
   }
 
   const directSibling = path.resolve(resolvedRoot, "../HiWeb");
@@ -122,36 +198,19 @@ export function resolveDefaultHiwebDir(rootDir) {
     return directSibling;
   }
 
-  const dotGitPath = path.join(resolvedRoot, ".git");
-  try {
-    if (existsSync(dotGitPath) && statSync(dotGitPath).isFile()) {
-      const pointer = readFileSync(dotGitPath, "utf8").trim();
-      if (pointer.startsWith("gitdir:")) {
-        const rawGitDir = pointer.slice("gitdir:".length).trim();
-        const gitDir = path.isAbsolute(rawGitDir) ? path.resolve(rawGitDir) : path.resolve(resolvedRoot, rawGitDir);
-
-        let commonGitDir = null;
-        const commonDirFile = path.join(gitDir, "commondir");
-        if (existsSync(commonDirFile)) {
-          const rawCommon = readFileSync(commonDirFile, "utf8").trim();
-          commonGitDir = path.isAbsolute(rawCommon) ? path.resolve(rawCommon) : path.resolve(gitDir, rawCommon);
-        } else if (path.basename(path.dirname(gitDir)) === "worktrees") {
-          commonGitDir = path.resolve(gitDir, "../..");
-        }
-
-        if (commonGitDir && path.basename(commonGitDir) === ".git") {
-          const fallbackSibling = path.resolve(path.dirname(commonGitDir), "../HiWeb");
-          if (existsSync(fallbackSibling)) {
-            return fallbackSibling;
-          }
-        }
-      }
-    }
-  } catch {
-    // 忽略指针文件读取异常，回退至直接同级路径
+  const repoRoot = tryRunGit(resolvedRoot, ["rev-parse", "--show-toplevel"]);
+  const repoSibling = repoRoot ? path.resolve(repoRoot, "../HiWeb") : null;
+  if (repoSibling && existsSync(repoSibling)) {
+    return repoSibling;
   }
 
-  return directSibling;
+  const mainRepoRoot = resolveMainWorktreeRepoRoot(resolvedRoot);
+  const mainRepoSibling = mainRepoRoot ? path.resolve(mainRepoRoot, "../HiWeb") : null;
+  if (mainRepoSibling && existsSync(mainRepoSibling)) {
+    return mainRepoSibling;
+  }
+
+  return repoSibling ?? directSibling;
 }
 
 /** @param {string} raw */

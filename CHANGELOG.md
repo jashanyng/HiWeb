@@ -4,6 +4,10 @@
 
 ## [Unreleased]
 
+### 变更
+
+- **`scripts/hiweb-guard.mjs`**：升级 `resolveDefaultHiwebDir(rootDir)` 目录解析优先级，新增基于 `git rev-parse --show-toplevel` 的 Git 仓库根父目录定位与 `--git-common-dir`（含 `.git` 文件指针兜底）主 worktree 回落机制，兼顾独立单仓、多端单仓（Monorepo）各级端目录、linked worktree 及无同级目录的离线单仓 CI 回退。
+
 ## [0.0.1]
 
 ### 新增
